@@ -94,7 +94,7 @@ class bitskinsTools:
     
             discount = (lower - price) / lower * 100
 
-            if (item_id not in notified_ids and discount > 30):
+            if (item_id not in notified_ids and discount > 10):
                 message = "New interesting items found:\n\n"
                 url = "https://bitskins.com/view_item?app_id=730&item_id=" + str(item_id)
                 notified_ids.append(item_id)
