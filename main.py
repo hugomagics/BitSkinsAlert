@@ -126,7 +126,7 @@ def main():
             bitskins.checkSkinErrorPrice()
         except Exception as e:
             print(e)
-        time.sleep(120)
+        time.sleep(5)
 
 if __name__ == "__main__":
     print("Starting Bitskins bot...")
