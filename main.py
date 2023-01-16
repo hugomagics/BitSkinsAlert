@@ -6,8 +6,6 @@ import json
 from datetime import datetime
 import time
 
-print("test")
-
 load_dotenv()
 requests.packages.urllib3.disable_warnings()
 chat_id = "-782003447"
