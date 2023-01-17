@@ -62,7 +62,7 @@ class bitskinsTools:
 
     def checkSkinErrorPrice(self):
         endpoint = "/api/v1/get_inventory_on_sale"
-        url = self.api_endpoint + endpoint + "/?api_key=" + self.api_key + "&code=" + self.get2faCode() + "&per_page=480" + "&sort_by=created_at&sort_order=asc"
+        url = self.api_endpoint + endpoint + "/?api_key=" + self.api_key + "&code=" + self.get2faCode() + "&per_page=30" + "&sort_by=created_at&sort_order=asc"
         market_data = requests.get(url)
         if (market_data.status_code != 200):
             print(market_data.text)
@@ -101,11 +101,10 @@ class bitskinsTools:
                 message += f"item:\t{item['market_hash_name']}\n"
                 message += f"price:\t{price:.2f}€\n"
                 message += f"discount:\t{discount:.2f}%\n"
-                message += f"date:\t{date}\n"
+                message += f"last update:\t{date}\n"
                 message += f"url:\t{url}\n"
                 message += "\n"
                 send_telegram_message(message, chat_id, api_key)
-
         return 0
 
 def send_telegram_message(message: str, chat_id: str, api_key: str):
@@ -126,7 +125,6 @@ def main():
             bitskins.checkSkinErrorPrice()
         except Exception as e:
             print(e)
-        time.sleep(5)
 
 if __name__ == "__main__":
     print("Starting Bitskins bot...")
