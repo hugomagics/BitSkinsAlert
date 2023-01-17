@@ -119,7 +119,6 @@ def send_telegram_message(message: str, chat_id: str, api_key: str):
 
 def main():
     bitskins = bitskinsTools()
-
     while True:
         try:
             bitskins.checkSkinErrorPrice()
