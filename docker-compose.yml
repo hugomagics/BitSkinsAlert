@@ -3,3 +3,4 @@ services:
   telegram_bot:
     build: .
     restart: always
+    mem_limit: 128m
