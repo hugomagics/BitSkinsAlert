@@ -28,7 +28,7 @@ class bitskinsTools:
         url = self.api_endpoint + endpoint + "/?api_key=" + self.api_key + "&code=" + self.get2faCode()
         balance = requests.get(url)
 
-        return balance.json()['data']
+        return balance.json()['data']['available_balance']
 
     def getSpecificItemOnSale(self, item_id):
         endpoint = "/api/v1/get_specific_items_on_sale"
@@ -59,6 +59,31 @@ class bitskinsTools:
         item_low_price = data['data']['items'][0]['price']
 
         return float(item_low_price)
+    
+    def buyItem(self, item_id, price):
+        endpoint = "/api/v1/buy_item"
+        url = self.api_endpoint + endpoint + "/?api_key=" + self.api_key + "&code=" + self.get2faCode() + "&item_ids=" + item_id + "&prices=" + str(price)
+
+        balance = self.getBalance()
+        if (balance < price):
+            print("not enough money")
+            return False
+        if (price > 100):
+            print("too expensive")
+            return False
+        if (price < 15):
+            print("too cheap")
+            return False
+
+        buy = requests.get(url)
+        if (buy.status_code != 200):
+            print(buy.text)
+            print(f"Error getting market data: {buy.status_code}")
+            return False
+        
+        return True
+        
+
 
     def checkSkinErrorPrice(self):
         endpoint = "/api/v1/get_inventory_on_sale"
@@ -105,6 +130,19 @@ class bitskinsTools:
                 message += f"url:\t{url}\n"
                 message += "\n"
                 send_telegram_message(message, chat_id, api_key)
+                buyed = self.buyItem(item_id, price)
+
+                if (buyed):
+                    message = "Item bought:\n\n"
+                    message += f"item:\t{item['market_hash_name']}\n"
+                    message += f"price:\t{price:.2f}€\n"
+                    message += f"discount:\t{discount:.2f}%\n"
+                    message += f"last update:\t{date}\n"
+                    message += f"url:\t{url}\n"
+                    message += "\n"
+                    send_telegram_message(message, chat_id, api_key)
+                    print("item bought")
+
         return 0
 
 def send_telegram_message(message: str, chat_id: str, api_key: str):
