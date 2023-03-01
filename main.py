@@ -100,9 +100,7 @@ class bitskinsTools:
 
         for item in data['data']['items']:
 
-            lower = self.getLowPriceItem(item['market_hash_name'])
-            if (lower == 0):
-                continue
+            print(item['market_hash_name'].split("|")[0].strip())
 
             date = datetime.fromtimestamp(item['updated_at']).strftime('%Y-%m-%d %H:%M:%S')
             item_id = item['item_id']
@@ -115,6 +113,10 @@ class bitskinsTools:
 
             categorie = item['market_hash_name'].split("|")[0].strip()
             if (categorie == "Sticker"):
+                continue
+
+            lower = self.getLowPriceItem(item['market_hash_name'])
+            if (lower == 0):
                 continue
     
             discount = (lower - price) / lower * 100
@@ -130,19 +132,18 @@ class bitskinsTools:
                 message += f"url:\t{url}\n"
                 message += "\n"
                 send_telegram_message(message, chat_id, api_key)
-                buyed = self.buyItem(item_id, price)
-
-                if (buyed):
-                    message = "Item bought:\n\n"
-                    message += f"item:\t{item['market_hash_name']}\n"
-                    message += f"price:\t{price:.2f}€\n"
-                    message += f"discount:\t{discount:.2f}%\n"
-                    message += f"last update:\t{date}\n"
-                    message += f"url:\t{url}\n"
-                    message += "\n"
-                    send_telegram_message(message, chat_id, api_key)
-                    print("item bought")
-
+                if ("Knife" not in categorie):
+                    buyed = self.buyItem(item_id, price)
+                    if (buyed):
+                        message = "Item bought:\n\n"
+                        message += f"item:\t{item['market_hash_name']}\n"
+                        message += f"price:\t{price:.2f}€\n"
+                        message += f"discount:\t{discount:.2f}%\n"
+                        message += f"last update:\t{date}\n"
+                        message += f"url:\t{url}\n"
+                        message += "\n"
+                        send_telegram_message(message, chat_id, api_key)
+                        print("item bought")
         return 0
 
 def send_telegram_message(message: str, chat_id: str, api_key: str):
