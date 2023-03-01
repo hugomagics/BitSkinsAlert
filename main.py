@@ -65,7 +65,7 @@ class bitskinsTools:
         url = self.api_endpoint + endpoint + "/?api_key=" + self.api_key + "&code=" + self.get2faCode() + "&item_ids=" + item_id + "&prices=" + str(price)
 
         balance = self.getBalance()
-        if (balance < price):
+        if (float(balance) < price):
             print("not enough money")
             return False
         if (price > 100):
