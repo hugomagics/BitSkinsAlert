@@ -100,8 +100,6 @@ class bitskinsTools:
 
         for item in data['data']['items']:
 
-            print(item['market_hash_name'].split("|")[0].strip())
-
             date = datetime.fromtimestamp(item['updated_at']).strftime('%Y-%m-%d %H:%M:%S')
             item_id = item['item_id']
             price = float(item['price'])
